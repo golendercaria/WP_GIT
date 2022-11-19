@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: WP-GIT
+Plugin Name: WPGIT
 Plugin URI: https://github.com/golendercaria/WP_GIT
 Description: Just for display current repository for developpment team
 Version: 1.0.0
