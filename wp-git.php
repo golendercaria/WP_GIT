@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WP-GIT
-Plugin URI: https://nouslesdevs.com
+Plugin URI: https://github.com/golendercaria/WP_GIT
 Description: Just for display current repository for developpment team
 Version: 1.0.0
 Requires at least: any
@@ -112,20 +112,23 @@ class git{
 
 
 		// retrieve head
-		$git_path = ABSPATH . ".git/HEAD";
+		$git_index_path = ABSPATH . ".git/index";
+		$git_head_path = ABSPATH . ".git/HEAD";
+		$has_changed = false;
 
 		// get branch
-		if( file_exists($git_path) ){
+		if( file_exists($git_head_path) && file_exists($git_index_path) ){
 			
-			$timestamp_last_update_head_file = filemtime($git_path);
+			$timestamp_last_update_index_file = filemtime($git_index_path);
 
 			// update branch information if file has updated
-			if( $_SESSION[ __NAMESPACE__ ]["last_update"] < $timestamp_last_update_head_file ){
-			
-				$_SESSION[ __NAMESPACE__ ]["last_update"] = $timestamp_last_update_head_file;
+			if( $_SESSION[ __NAMESPACE__ ]["last_update"] < $timestamp_last_update_index_file ){
+
+				$has_changed = true;
+				$_SESSION[ __NAMESPACE__ ]["last_update"] = $timestamp_last_update_index_file;
 
 				// read HEAD file
-				$this->head = file_get_contents($git_path);
+				$this->head = file_get_contents($git_head_path);
 				preg_match('/ref: (refs\/heads)\/(.*)/m', $this->head, $match);
 
 				$this->ref_head 		= $match[1] ?? null;
@@ -138,7 +141,7 @@ class git{
 		}
 
 		// retrieve logs if empty
-		if(	empty($_SESSION[ __NAMESPACE__ ]["logs"]) ){
+		if(	$has_changed || empty($_SESSION[ __NAMESPACE__ ]["logs"]) ){
 
 			// TODO button for refresh logs in ajax
 			// make new functions in later
