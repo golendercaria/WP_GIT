@@ -16,17 +16,42 @@ namespace GOL_git;
 
 class git{
 
-	public $current_branch = null;
-	public $last_logs = array();
-	public $version = "1.0.0";
+	public $current_branch 	= null;
+	public $last_logs 		= array();
+	public $version 		= "1.0.0";
 
 	public function __construct(){
 
 		add_action( 'init' , array($this, 'init'), 99 );
 		add_action( 'admin_bar_menu' , array( $this, 'add_toolbar_items' ), 100);
 		add_action( 'admin_enqueue_scripts' , array( $this, 'admin_styles') );
+		add_action( 'wp_enqueue_scripts' , array( $this, 'front_styles') );
+		add_action( 'wp_footer', array( $this, 'render_to_front' ) );
 
+	}
 
+	public function render_to_front(){
+		?>
+		<div id="<?= __NAMESPACE__ ?>">
+			<button class="refresh"></button>
+			<div class="branch"><?= $_SESSION[ __NAMESPACE__ ]["branch"] ?? null; ?></div>
+			<div class="logs">
+				<?php
+					if( !empty($_SESSION[ __NAMESPACE__ ]["logs"]) ){
+						foreach( $_SESSION[ __NAMESPACE__ ]["logs"] as $log){
+							?>
+							<div class="log">
+								<div class="author"><?= $log["author"] ?></div>
+								<div class="date"><?= $log["date"] ?></div>
+								<div class="message"><?= $log["message"] ?></div>
+							</div>
+							<?php
+						}
+					}
+				?>
+			</div>
+		</div>
+		<?php
 	}
 
 	public function add_toolbar_items( $admin_bar ){
@@ -43,12 +68,20 @@ class git{
 	}
 
 
-	function admin_styles() {
+	function front_styles() {
 		wp_enqueue_style(__NAMESPACE__, plugin_dir_url(__FILE__) . 'css/build/app.css',array(), $this->version );
+	}
+
+	function admin_styles() {
+		wp_enqueue_style(__NAMESPACE__, plugin_dir_url(__FILE__) . 'css/build/admin.css',array(), $this->version );
 	}
 
 
 	public function init(){
+
+		if( !session_id() ){
+			session_start();
+		}
 
 		$this->load_git_information();
 
@@ -136,7 +169,7 @@ class git{
 
 				$history[] = array(
 					"author" 	=> $match[1],
-					"timestamp" => $time->format("d-m-Y"),
+					"date" => $time->format("d-m-Y"),
 					"message"	=> $match[4]
 				);
 

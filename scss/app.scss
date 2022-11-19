@@ -1,13 +1,89 @@
-#wpadminbar{
-	#wp-admin-bar-GOL_git{
-		> a{
-			&:before{
-				content: "";
-				width: 20px;
-				height: 25px;
-				transform: rotate(90deg);
-				background: transparent url(../../img/git.svg) no-repeat center !important;
-			}
+#GOL_git{
+
+	position: absolute;
+	z-index: 20;
+	right: 20px;
+	bottom: 20px;
+	background: rgb(140, 93, 255);
+	color: white;
+	display: flex;
+	border-radius: 10px;
+	align-items: center;
+
+
+	.refresh{
+		width: 40px;
+		background: rgb(110, 71, 207);
+		border: 0;
+		border-top-left-radius: 10px;
+		border-bottom-left-radius: 10px;
+		display: flex;
+		align-items: center;
+		min-height: 35px;
+		padding-left: 10px;
+		
+		&:after{
+			content: "";
+			background: transparent url(../../img/refresh.svg) no-repeat center;
+			width: 20px;
+			height: 20px;
+			opacity: 0.8;
 		}
 	}
+
+	.branch{
+		padding: 0 15px 0 10px;
+		font-size: 20px;
+	}
+
+	.logs{
+		display: none;
+		padding: 5px;
+		position: absolute;
+		right: 0;
+		bottom: calc( 100% + 10px );
+		background: rgb(140, 93, 255);
+		font-size: 16px;
+		width: 25vw;
+		max-height: 260px;
+		overflow: scroll;
+		.log{
+			& + .log{
+				margin-top: 5px;
+			}
+		}
+		.author{
+			background: rgb(110, 73, 206);
+			display: inline-block;
+			padding: 2px 5px;
+		}
+		.date{
+			background: white;
+			color: rgb(110, 73, 206);
+			display: inline-block;
+			padding: 2px 5px;
+		}
+		.message{
+			padding: 5px;
+		}
+		&:after{
+			content: "";
+			position: absolute;
+			top: 100%;
+			right: 20px;
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 7px 5px 0 5px;
+			border-color: rgb(140, 93, 255) transparent transparent transparent;
+		}
+	}
+
+	&:hover{
+		.logs{
+			display: block;
+		}
+	}
+	
+	
 }
