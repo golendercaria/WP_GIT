@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Git
+Plugin Name: WP-GIT
 Plugin URI: https://nouslesdevs.com
 Description: Just for display current repository for developpment team
 Version: 1.0.0
