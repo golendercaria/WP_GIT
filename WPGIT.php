@@ -5,7 +5,7 @@ Plugin URI: https://github.com/golendercaria/WP_GIT
 Description: Just for display current repository for developpment team
 Version: 1.0.0
 Requires at least: any
-Requires PHP: 5.6
+Requires PHP: 8.0
 Author: Yann Vangampelaere
 Author URI: https://nouslesdevs.com
 License: GPLv2 or later
